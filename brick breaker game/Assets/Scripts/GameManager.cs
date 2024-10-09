@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public int playerBalls;
+    public int playerBalls = 3;
 
     public int brickGridWidth;
     public int brickGridHeight;
@@ -12,16 +13,21 @@ public class GameManager : MonoBehaviour
     public float brickAmountX;
     public float brickAmountY;
 
-    public List<GameObject> brickPrefabs; // Prefab list for spawning bricks
+    public List<GameObject> brickPrefabs; 
 
     public Ball ballReference;
-
-   // public int currentScore  
 
     public List<Brick> spawnedBricks;
     public int remainingPlayerBalls;
 
     public GameObject brickPrefab;
+
+    public  int totalPlayerScore;
+
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI liveText;
+
+    public int[] randomScores = { 10, 25, 50, 75, 100 };
 
     private void Awake()
     {
@@ -31,30 +37,22 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-
+        playerBalls = remainingPlayerBalls;
         SpawnBricksAndBrickValue();
-        ballReference.LaunchBall();
+       
 
-        //LaunchAll(Random.Range(0, 2) == 1);
+        
     }
 
-    public IEnumerator wait(float timeAmount)
+    public void Update()
     {
-
-
-       yield return new WaitForSeconds(timeAmount);
+        scoreText.text = "Score: " + totalPlayerScore;
+        liveText.text = remainingPlayerBalls + " :Lives";
     }
 
-    public void Respawnball()
-    {
-        GameObject.Find("ball").transform.position = new Vector3(0.07f, -1.91f, 0);
-    }
 
-    public void StopBallVelocity()
-    {
-        GameObject.Find("ball").GetComponent<Rigidbody2D>().velocity = Vector3.zero;
-        GameObject.Find("ball").GetComponent<Rigidbody2D>().angularVelocity = 0f;
-    }
+
+
 
     public void SpawnBricksAndBrickValue()
     {
@@ -129,9 +127,10 @@ public class GameManager : MonoBehaviour
                 currentBrick.transform.position = new Vector3(-3 + tempBrickAmountX, 0 + tempBrickAmountY, 0);
 
 
-
+                currentBrick.GetComponent<Brick>().score = randomScores[Random.Range(0, 5)];
 
                 brickPrefabs.Add(currentBrick);
+                spawnedBricks.Add(currentBrick.GetComponent<Brick>());
                 print(j);
                 print(color);
                 tempBrickAmountX += brickAmountX;
@@ -143,5 +142,16 @@ public class GameManager : MonoBehaviour
 
 
         }
+    }
+
+    public void NotifyBrickDestroyed(int score)
+    {
+        totalPlayerScore += score;
+    }
+
+
+    public void NoifyBallLost()
+    {
+        remainingPlayerBalls -= 1;
     }
 }

@@ -6,6 +6,10 @@ TagManager:
   tags:
   - deathZone
   - ball
+  - LeftWall
+  - RightWall
+  - Brick
+  - TopWall
   layers:
   - Default
   - TransparentFX

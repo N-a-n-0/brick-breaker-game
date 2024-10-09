@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7999746227024396582}
   m_Layer: 0
   m_Name: Brick
-  m_TagString: Untagged
+  m_TagString: Brick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score: 1
+  randomScores: 0a00000019000000320000004b00000064000000
 --- !u!61 &7999746227024396582
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -108,7 +109,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1012297292513669086}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 866909486874be04a9ffbadbaaa8dd0b, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

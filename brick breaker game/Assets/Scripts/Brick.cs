@@ -6,16 +6,15 @@ public class Brick : MonoBehaviour
 {
 
     public int score = 1;
+
+    
     // Start is called before the first frame update
-
-
-    public void OnCollisionEnter2D(Collision2D collision)
+    public void Start()
     {
-        print("collision was detected");
-        if (collision.gameObject.CompareTag("ball"))
-        {
-            Destroy(this.gameObject);
-            print("ball collided with me :)");
-        }
+         
+        
+        print(score);
     }
+
+   
 }
