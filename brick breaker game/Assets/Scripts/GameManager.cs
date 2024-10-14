@@ -13,7 +13,8 @@ public class GameManager : MonoBehaviour
     public float brickAmountX;
     public float brickAmountY;
 
-    public List<GameObject> brickPrefabs; 
+    public List<GameObject> brickPrefabs;
+    public int bricksLeft;
 
     public Ball ballReference;
 
@@ -27,7 +28,12 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI liveText;
 
+    public TextMeshProUGUI gameOverText;
+    public TextMeshProUGUI winnerText;
+
     public int[] randomScores = { 10, 25, 50, 75, 100 };
+
+    public AudioSource audioSource;
 
     private void Awake()
     {
@@ -35,13 +41,15 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void Start()
+    public  void Start()
     {
-        playerBalls = remainingPlayerBalls;
+        remainingPlayerBalls = playerBalls;
         SpawnBricksAndBrickValue();
-       
+        bricksLeft = brickPrefabs.Count;
 
-        
+
+
+
     }
 
     public void Update()
@@ -89,7 +97,7 @@ public class GameManager : MonoBehaviour
 
             }
             
-            print(i);
+           // print(i);
 
             for(int j = 0; j < brickGridWidth; j++)
             {
@@ -112,7 +120,7 @@ public class GameManager : MonoBehaviour
                         break;
                     case 4:
                         currentBrick.GetComponent<SpriteRenderer>().color = new Color32(13, 255, 0, 255);
-                        print("green");
+                       // print("green");
                         break;
                     default:
                        // colorIndex = Random.Range(0, 5);
@@ -131,8 +139,8 @@ public class GameManager : MonoBehaviour
 
                 brickPrefabs.Add(currentBrick);
                 spawnedBricks.Add(currentBrick.GetComponent<Brick>());
-                print(j);
-                print(color);
+                //print(j);
+             //   print(color);
                 tempBrickAmountX += brickAmountX;
 
             }

@@ -13,7 +13,7 @@ public class Brick : MonoBehaviour
     {
          
         
-        print(score);
+      //  print(score);
     }
 
    

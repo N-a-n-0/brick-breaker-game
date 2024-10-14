@@ -16,12 +16,12 @@ public class Ball : MonoBehaviour
     {
         rb.velocity = rb.velocity.normalized * player.ballLaunchForce;
     }
-     
 
 
-    void OnCollisionEnter2D(Collision2D collision)
+
+    IEnumerator OnCollisionEnter2D(Collision2D collision)
     {
-
+        gameManager.audioSource.Play();
         Collider2D hitCollider = collision.collider;
         Vector2 direction = new Vector2(0,0);
        
@@ -44,11 +44,42 @@ public class Ball : MonoBehaviour
        
        else  if (collision.gameObject.CompareTag("Brick"))
         {
+
             gameManager.NotifyBrickDestroyed(collision.gameObject.GetComponent<Brick>().score);
            
             //  collision.gameObject.SetActive(false);
             Destroy(collision.gameObject);
+            gameManager.bricksLeft--;
+            if(gameManager.bricksLeft <= 0)
+            {
+                Debug.Log("YOU WON THE GAME SPAWNING MORE BRICKS FOR YOU");
+                StopBallVelocity();
+                print("Ball has been stopped");
+                gameManager.winnerText.gameObject.SetActive(true);
+
+                for (int i = 0; i < gameManager.brickPrefabs.Count; i++)
+                {
+                    
+                    if (gameManager.brickPrefabs[i] != null)
+                    {
+                       
+                        Destroy(gameManager.brickPrefabs[i]);
+                    }
+                }
+                gameManager.brickPrefabs.Clear();
+                gameManager.spawnedBricks.Clear();
+                yield return new WaitForSeconds(2f);
+                player.ResetBall();
+                gameManager.winnerText.gameObject.SetActive(false);
+                gameManager.SpawnBricksAndBrickValue();
+                gameManager.bricksLeft = gameManager.brickPrefabs.Count;
+                yield return new WaitForSeconds(1f);
+               
+                yield return new WaitForSeconds(1f);
+                player.LaunchBall();
+            }
             print("ball collided with me :)");
+            
         }
 
 
@@ -71,7 +102,7 @@ public class Ball : MonoBehaviour
             gameManager.NoifyBallLost();
             if (gameManager.remainingPlayerBalls > 0)
             {
-                print("ifstatement");
+               
                 StopBallVelocity();
                 player.ResetBall();
 
@@ -81,7 +112,32 @@ public class Ball : MonoBehaviour
             }
             else
             {
+                Debug.Log("YOU LOST  RESTARTING GAME.....");
                 StopBallVelocity();
+                print("Ball has been stopped");
+                gameManager.gameOverText.gameObject.SetActive(true);
+
+                for (int i = 0; i < gameManager.brickPrefabs.Count; i++)
+                {
+                   
+                    if(gameManager.brickPrefabs[i] != null)
+                    {
+                        
+                        Destroy(gameManager.brickPrefabs[i]);
+                    }
+                }
+                gameManager.brickPrefabs.Clear();
+                gameManager.spawnedBricks.Clear();
+                yield return new WaitForSeconds(2f);
+                gameManager.gameOverText.gameObject.SetActive(false);
+                gameManager.Start();
+               
+                yield return new WaitForSeconds(1f);
+                player.ResetBall();
+                gameManager.totalPlayerScore = 0;
+                yield return new WaitForSeconds(1f);
+                player.LaunchBall();
+
             }
               
         }
